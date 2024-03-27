@@ -7,25 +7,25 @@ import (
 )
 
 func TestShouldCreateNewFileProperties(t *testing.T) {
-	fp := NewFileProperties().
-		SetName("app_test").
-		SetType(YAML).
-		SetLocations(".", "./configs-test").
+	cl := New().
+		Name("app_test").
+		FileType(YAML).
+		PathLocations(".", "./configs-test").
 		Build()
 
-	if fp == nil {
+	if cl == nil {
 		t.Errorf("FileProperties instance cannot be nil")
 	}
 }
 
 func TestShouldParseYAMLConfigFile(t *testing.T) {
-	fp := NewFileProperties().
-		SetName("app_test").
-		SetType(YAML).
-		SetLocations(".", "./configs").
+	cl := New().
+		Name("app_test").
+		FileType(YAML).
+		PathLocations(".", "./configs").
 		Build()
 
-	configs, err := fp.Parse()
+	configs, err := cl.Parse()
 	if err != nil {
 		t.Errorf(err.Error())
 	}
@@ -33,34 +33,34 @@ func TestShouldParseYAMLConfigFile(t *testing.T) {
 }
 
 func TestShouldGenerateJSONString(t *testing.T) {
-	fp := NewFileProperties().
-		SetName("app_test").
-		SetType(YAML).
-		SetLocations(".", "./configs").
+	cl := New().
+		Name("app_test").
+		FileType(YAML).
+		PathLocations(".", "./configs").
 		Build()
 
-	jsonString, err := fp.ToJSONString()
+	jsonString, err := cl.ToJSONString()
 	if err != nil {
 		t.Errorf(err.Error())
 	}
-	newFP := &FileProperties{}
-	if err = json.Unmarshal([]byte(jsonString), newFP); err != nil {
+	newCL := &ConfigLoader{}
+	if err = json.Unmarshal([]byte(jsonString), newCL); err != nil {
 		t.Errorf(err.Error())
 	}
-	if el := compare(*fp, *newFP); len(el) > 0 {
+	if el := compare(*cl, *newCL); len(el) > 0 {
 		t.Errorf("structures are not equal: \n%v", el)
 	}
 }
 
-func compare(fp1, fp2 FileProperties) (errorsList []error) {
+func compare(cl1, cl2 ConfigLoader) (errorsList []error) {
 	appendErrors := func(err error) {
 		if err != nil {
 			errorsList = append(errorsList, err)
 		}
 	}
-	data1, err := json.Marshal(fp1)
+	data1, err := json.Marshal(cl1)
 	appendErrors(err)
-	data2, err := json.Marshal(fp2)
+	data2, err := json.Marshal(cl2)
 	appendErrors(err)
 	if string(data1) != string(data2) {
 		appendErrors(fmt.Errorf("structs values are different"))
@@ -69,13 +69,13 @@ func compare(fp1, fp2 FileProperties) (errorsList []error) {
 }
 
 func TestShouldNotLoadFile(t *testing.T) {
-	fp := NewFileProperties().
-		SetName("app_test").
-		SetType(YAML).
-		SetLocations().
+	cl := New().
+		Name("app_test").
+		FileType(YAML).
+		PathLocations().
 		Build()
 
-	if _, err := fp.Load(); err == nil {
+	if _, err := cl.Load(); err == nil {
 		t.Errorf("expected error: %s, got \"\"", "path(s) location(s) cannot be empty")
 	}
 }

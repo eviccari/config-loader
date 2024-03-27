@@ -11,15 +11,15 @@ For **.env**, **.properties** or **toml** extensions, please checkout for anothe
 
 * Golang 1.21
 
-### File Properties
-File Properties are the main structure in the package. It will provide the **Parse()** function to read values from config file, returning the map[string]interface{}.
+### Config Loader
+Config Loader are the main structure in the package. It will provide the **Parse()** function to read values from config file, returning the map[string]interface{}.
 
 ```go
 type FileProperties struct {
-	Name          string   `json:"name"`
-	Type          string   `json:"type"`
-	PathLocations []string `json:"path_locations"`
-	FinalPath     string   `json:"final_path"`
+	Name_          string   `json:"name"`
+	Type_          string   `json:"type"`
+	PathLocations_ []string `json:"path_locations"`
+	FinalPath      string   `json:"final_path"`
 }
 ``` 
 | Property          | Description                              |
@@ -41,13 +41,13 @@ LogLevel: 0
 Basic implementation
 ```go
 func main() {
-	fp := filehandlers.NewFileProperties().
-		SetName("app").
-		SetType(filehandlers.YML).
-		SetLocations(".", "./configs"). // assuming that file location is . or ./configs
+	cl := configLoader.New().
+		Name("app").
+		FileType(filehandlers.YML).
+		PathLocations(".", "./configs"). // assuming that file location is . or ./configs
 		Build()
 
-	configs, err := fp.Parse()
+	configs, err := cl.Parse()
 	if err != nil {
 		panic(err)
 	}
