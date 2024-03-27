@@ -40,6 +40,11 @@ LogLevel: 0
 
 Basic implementation
 ```go
+import(
+	// another imports here
+	configloader "github.com/eviccari/config-loader"
+)
+
 func main() {
 	cl := configLoader.New().
 		Name("app").
@@ -76,6 +81,11 @@ api:
 ```
 
 ```go
+import(
+	// another imports here
+	configloader "github.com/eviccari/config-loader"
+)
+
 type MyConf struct {
 	AppName    string `json:"app_name"`
 	AppVersion string `json:"app_version"`
