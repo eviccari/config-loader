@@ -1,6 +1,6 @@
 ## Config Loader
 
-This Golang package helps to load and get values from configuration files, most specifically **json** and **yml** types.
+This Golang package helps to load values from configuration files, most specifically **json** and **yaml** types.
 For **.env**, **.properties** or **toml** extensions, please checkout for another great packages to solve your context:
 
 * https://github.com/joho/godotenv
@@ -61,6 +61,50 @@ The output:
 $ go run main.go 
 my-app
 ./configs
+```
+
+Also, you can bind configs into another more complex struct using golang json package:
+
+**example2.yaml**
+```yaml
+app_name: "my-app"
+app_version: "1.0.0"
+log_level: 0
+api:
+	port: 3000
+	path: "/"
+```
+
+```go
+type MyConf struct {
+	AppName    string `json:"app_name"`
+	AppVersion string `json:"app_version"`
+	LogLevel   int    `json:"log_level"`
+	API        struct {
+		Port int    `json:"port"`
+		Path string `json:"path"`
+	} `json:"api"`
+}
+
+func main() { // Error handling are ignored to simplify, do not that in your app ;)
+	cl := configloader.New().
+		Name("example2").
+		FileType(configloader.YAML).
+		PathLocations(".", "./configs-test").
+		Build()
+
+	configs, _ := cl.Parse()
+	configsAsBytes, _ := json.Marshal(configs)
+	myConf := MyConf{}
+	json.Unmarshal(configsAsBytes, &myConf)
+	fmt.Println(myConf.API.Port)
+}
+```
+
+The output:
+```bash
+$ go run main.go
+3000
 ```
 
 Thank you! Enjoy!

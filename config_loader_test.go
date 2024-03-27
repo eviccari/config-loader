@@ -1,4 +1,4 @@
-package filehandlers
+package configloader
 
 import (
 	"encoding/json"
@@ -81,21 +81,21 @@ func TestShouldNotLoadFile(t *testing.T) {
 }
 
 func validateFields(configs map[string]interface{}, t *testing.T) {
-	appName, ok := configs["AppName"]
+	appName, ok := configs["app_name"]
 	if !ok {
 		t.Errorf("expect that configs contains AppName")
 	}
 	if appName != "my-app" {
 		t.Errorf("expected AppName value: %s, got %s", "my-app", appName)
 	}
-	appVersion, ok := configs["AppVersion"]
+	appVersion, ok := configs["app_version"]
 	if !ok {
 		t.Errorf("expect that configs contains AppVersion")
 	}
 	if appVersion != "1.0.0" {
 		t.Errorf("expected AppVersion: %s, got %s", "1.0.0", appVersion)
 	}
-	logLevel, ok := configs["LogLevel"]
+	logLevel, ok := configs["log_level"]
 	if !ok {
 		t.Errorf("expect that configs contains LogLevel")
 	}

@@ -1,3 +1,6 @@
 app_name: "my-app"
 app_version: "1.0.0"
 log_level: -4
+api:
+  port: 3000
+  path: "/"

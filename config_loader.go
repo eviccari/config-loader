@@ -1,4 +1,4 @@
-package filehandlers
+package configloader
 
 import (
 	"encoding/json"

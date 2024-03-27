@@ -1,5 +1,5 @@
 {
-    "AppName": "my-app",
-    "AppVersion": "1.0.0",
-    "LogLevel": -4
+    "app_name": "my-app",
+    "app_version": "1.0.0",
+    "log_level": -4
 }
