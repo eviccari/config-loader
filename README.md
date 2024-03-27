@@ -33,7 +33,7 @@ type FileProperties struct {
 
 **example.yaml**
 ```yaml
-AppName: "my-golang-app"
+AppName: "my-app"
 Version: "1.0.0"
 LogLevel: 0
 ```
